@@ -1,27 +1,32 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './Navbar.css'
 import { assets } from './../../assets/assets';
+import {Link} from 'react-router-dom';
+import { StoreContext } from '../../context/StoreContext';
 
-const Navbar = () => {
+const Navbar = ({setShowlogin}) => {
 
   const [menu, setMenu] = useState('home')
 
+  const {getTotalCartAmount} = useContext(StoreContext)
+
   return (
     <div className='navbar' >
-      <img src={assets.logo} alt="" className="logo" />
+     <Link to='/'> <img src={assets.logo} alt="" className="logo" /></Link>
       <ul className='navbar-menu'>
-        <li onClick={()=>setMenu("home")} className={menu==='home'?'active':''}>home</li>
-        <li onClick={()=>setMenu("menu")} className={menu==='menu'?"active":''}>menu</li>
-        <li onClick={()=>setMenu("about")} className={menu==='about'?"active":''}>About</li>
-        <li onClick={()=>setMenu("contact-us")} className={menu==='contact-us'?"active":''}>Contact us</li>
+        <Link to='/' onClick={()=>setMenu("home")} className={menu==='home'?'active':''}>home</Link>
+        <a href='#explore-menu' onClick={()=>setMenu("menu")} className={menu==='menu'?"active":''}>menu</a>
+        <a href='#app-download' onClick={()=>setMenu("about")} className={menu==='about'?"active":''}>About</a>
+        <a href='#footer' onClick={()=>setMenu("contact-us")} className={menu==='contact-us'?"active":''}>Contact us</a>
       </ul>
       <div className='navbar-right'>
         <img src={assets.search_icon} alt=''/>
         <div className="navbar-search-icon">
-          <img src={assets.basket_icon} alt="" />
-          <div className="dot"></div> 
+          <Link to='/cart'><img src={assets.basket_icon} alt="" /></Link>
+          {getTotalCartAmount() > 0 ? <div className="dot"></div>:<></>}
+           
         </div>
-        <button>Sign In </button>
+        <button onClick={()=> setShowlogin(true)}>Sign In </button>
       </div>
     </div>
   )
